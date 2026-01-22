@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ลงทะเบียนพนักงาน</title>
+    <title>Platform Squard Reg</title>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; margin: 0; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: flex-start; margin: 0; }
         .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 90%; max-width: 400px; }
         h2 { color: #333; text-align: center; margin-bottom: 25px; }
         .input-group { margin-bottom: 15px; text-align: left; }
@@ -25,14 +25,14 @@
 
 <div class="container">
     <h2>ลงทะเบียนพนักงาน</h2>
-    <div id="user">กำลังโหลดข้อมูล...</div>
+    <div class="text-align: center;" id="user">กำลังโหลดข้อมูล...</div>
     <div class="input-group">
         <label>รหัสพนักงาน</label>
         <input type="text" id="employeeId" placeholder="เช่น EMP001">
     </div>
     
     <div class="input-group">
-        <label>ชื่อ-นามสกุล</label>
+        <label>ชื่อ-นามสกุล (ภาษาไทย)</label>
         <input type="text" id="fullName" placeholder="นายใจดี มีสุข">
     </div>
 
@@ -109,5 +109,6 @@
 </script>
 </body>
 </html>
+
 
 
