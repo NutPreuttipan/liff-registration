@@ -25,7 +25,7 @@
 
 <div class="container">
     <h2>ลงทะเบียนพนักงาน</h2>
-    
+    <div id="user">กำลังโหลดข้อมูล...</div>
     <div class="input-group">
         <label>รหัสพนักงาน</label>
         <input type="text" id="employeeId" placeholder="เช่น EMP001">
@@ -45,60 +45,67 @@
 </div>
 
 <script>
-    const GAS_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL'; // URL อันเดิมที่คุณใช้ JSONP
+    const LIFF_ID = '2008881601-Dg4CmxGP';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyU3AGRsHFooYVhALdOztJPERgQmNd5BIfq7uQIMKiaOH3Ot1P9ZTDur2pOXBV9ORW-zA/exec';
 
-    async function handleRegister() {
-        const empId = document.getElementById('employeeId').value;
-        const name = document.getElementById('fullName').value;
-
-        if (!empId || !name) {
-            alert('กรุณากรอกข้อมูลให้ครบถ้วน');
-            return;
+    async function main() {
+        await liff.init({ liffId: LIFF_ID });
+        if (liff.isLoggedIn()) {
+            const profile = await liff.getProfile();
+            document.getElementById('user').innerText = "สวัสดีคุณ " + profile.displayName;
+        } else {
+            liff.login();
         }
+    }
+    main();
 
-        document.getElementById('loader').style.display = 'block';
 
-        // ดึง LIFF Profile เพื่อเก็บคู่กับรหัสพนักงาน
-        const profile = await liff.getProfile();
+    // async function handleRegister() {
+    //     const empId = document.getElementById('employeeId').value;
+    //     const name = document.getElementById('fullName').value;
+
+    //     if (!empId || !name) {
+    //         alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+    //         return;
+    //     }
+
+    //     document.getElementById('loader').style.display = 'block';
+
+    //     // ดึง LIFF Profile เพื่อเก็บคู่กับรหัสพนักงาน
+    //     const profile = await liff.getProfile();
         
-        // ใช้ JSONP ส่งข้อมูลไปที่ Apps Script (doGet)
-        const callbackName = 'reg_callback_' + Math.round(100000 * Math.random());
-        window[callbackName] = function(data) {
-            delete window[callbackName];
-            document.body.removeChild(script);
-            document.getElementById('loader').style.display = 'none';
+    //     // ใช้ JSONP ส่งข้อมูลไปที่ Apps Script (doGet)
+    //     const callbackName = 'reg_callback_' + Math.round(100000 * Math.random());
+    //     window[callbackName] = function(data) {
+    //         delete window[callbackName];
+    //         document.body.removeChild(script);
+    //         document.getElementById('loader').style.display = 'none';
             
-            if (data.status === 'success') {
-                alert('ลงทะเบียนสำเร็จแล้ว!');
-                liff.closeWindow();
-            } else {
-                alert('เกิดข้อผิดพลาด: ' + data.message);
-            }
-        };
+    //         if (data.status === 'success') {
+    //             alert('ลงทะเบียนสำเร็จแล้ว!');
+    //             liff.closeWindow();
+    //         } else {
+    //             alert('เกิดข้อผิดพลาด: ' + data.message);
+    //         }
+    //     };
 
-        const fullUrl = GAS_URL + 
-            '?callback=' + callbackName +
-            '&type=Registration' +
-            '&userId=' + encodeURIComponent(profile.userId) +
-            '&employeeId=' + encodeURIComponent(empId) +
-            '&userName=' + encodeURIComponent(name);
+    //     const fullUrl = GAS_URL + 
+    //         '?callback=' + callbackName +
+    //         '&type=Registration' +
+    //         '&userId=' + encodeURIComponent(profile.userId) +
+    //         '&employeeId=' + encodeURIComponent(empId) +
+    //         '&userName=' + encodeURIComponent(name);
 
-        const script = document.createElement('script');
-        script.src = fullUrl;
-        document.body.appendChild(script);
-    }
+    //     const script = document.createElement('script');
+    //     script.src = fullUrl;
+    //     document.body.appendChild(script);
+    // }
 
-    function handleCancel() {
-        if (confirm('คุณต้องการยกเลิกการลงทะเบียนหรือไม่?')) {
-            liff.closeWindow();
-        }
-    }
-
-    // Initialize LIFF
-    liff.init({ liffId: "YOUR_LIFF_ID" }).then(() => {
-        if (!liff.isLoggedIn()) liff.login();
-    });
+    // function handleCancel() {
+    //     if (confirm('คุณต้องการยกเลิกการลงทะเบียนหรือไม่?')) {
+    //         liff.closeWindow();
+    //     }
+    // }
 </script>
-
 </body>
 </html>
