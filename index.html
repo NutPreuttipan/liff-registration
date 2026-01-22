@@ -80,7 +80,7 @@
             document.getElementById('loader').style.display = 'none';
             
             if (data.status === 'success') {
-                alert('ลงทะเบียนสำเร็จแล้ว!');
+                alert(data.message);
                 liff.closeWindow();
             } else {
                 alert('เกิดข้อผิดพลาด: ' + data.message);
@@ -107,6 +107,7 @@
 </script>
 </body>
 </html>
+
 
 
 
