@@ -40,7 +40,7 @@
 
     <div class="btn-group">
         <button class="btn-cancel" onclick="handleCancel()">ยกเลิก</button>
-        <button class="btn-submit" onclick="handleRegister()">ตกลง</button>
+        <button class="btn-submit" onclick="sendData()">ตกลง</button>
     </div>
 </div>
 
@@ -60,7 +60,7 @@
     main();
 
 
-    async function handleRegister() {
+    async function sendData() {
         const empId = document.getElementById('employeeId').value;
         const name = document.getElementById('fullName').value;
 
@@ -107,6 +107,7 @@
 </script>
 </body>
 </html>
+
 
 
 
