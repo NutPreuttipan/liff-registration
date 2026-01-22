@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงทะเบียนพนักงาน</title>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 90%; max-width: 400px; }
+        h2 { color: #333; text-align: center; margin-bottom: 25px; }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 5px; color: #666; font-size: 14px; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-submit { background-color: #28a745; color: white; }
+        .btn-submit:hover { background-color: #218838; }
+        .btn-cancel { background-color: #dc3545; color: white; }
+        .btn-cancel:hover { background-color: #c82333; }
+        #loader { display: none; text-align: center; color: #28a745; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>ลงทะเบียนพนักงาน</h2>
+    
+    <div class="input-group">
+        <label>รหัสพนักงาน</label>
+        <input type="text" id="employeeId" placeholder="เช่น EMP001">
+    </div>
+    
+    <div class="input-group">
+        <label>ชื่อ-นามสกุล</label>
+        <input type="text" id="fullName" placeholder="นายใจดี มีสุข">
+    </div>
+
+    <div id="loader">กำลังบันทึกข้อมูล...</div>
+
+    <div class="btn-group">
+        <button class="btn-cancel" onclick="handleCancel()">ยกเลิก</button>
+        <button class="btn-submit" onclick="handleRegister()">ตกลง</button>
+    </div>
+</div>
+
+<script>
+    const GAS_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL'; // URL อันเดิมที่คุณใช้ JSONP
+
+    async function handleRegister() {
+        const empId = document.getElementById('employeeId').value;
+        const name = document.getElementById('fullName').value;
+
+        if (!empId || !name) {
+            alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+            return;
+        }
+
+        document.getElementById('loader').style.display = 'block';
+
+        // ดึง LIFF Profile เพื่อเก็บคู่กับรหัสพนักงาน
+        const profile = await liff.getProfile();
+        
+        // ใช้ JSONP ส่งข้อมูลไปที่ Apps Script (doGet)
+        const callbackName = 'reg_callback_' + Math.round(100000 * Math.random());
+        window[callbackName] = function(data) {
+            delete window[callbackName];
+            document.body.removeChild(script);
+            document.getElementById('loader').style.display = 'none';
+            
+            if (data.status === 'success') {
+                alert('ลงทะเบียนสำเร็จแล้ว!');
+                liff.closeWindow();
+            } else {
+                alert('เกิดข้อผิดพลาด: ' + data.message);
+            }
+        };
+
+        const fullUrl = GAS_URL + 
+            '?callback=' + callbackName +
+            '&type=Registration' +
+            '&userId=' + encodeURIComponent(profile.userId) +
+            '&employeeId=' + encodeURIComponent(empId) +
+            '&userName=' + encodeURIComponent(name);
+
+        const script = document.createElement('script');
+        script.src = fullUrl;
+        document.body.appendChild(script);
+    }
+
+    function handleCancel() {
+        if (confirm('คุณต้องการยกเลิกการลงทะเบียนหรือไม่?')) {
+            liff.closeWindow();
+        }
+    }
+
+    // Initialize LIFF
+    liff.init({ liffId: "YOUR_LIFF_ID" }).then(() => {
+        if (!liff.isLoggedIn()) liff.login();
+    });
+</script>
+
+</body>
+</html>
