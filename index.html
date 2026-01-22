@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platform Squard Reg</title>
+    <title>Platform Squard Reg1</title>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: flex-start; margin: 0; }
@@ -46,7 +46,7 @@
 
 <script>
     const LIFF_ID = '2008881601-QrkhXvfQ';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxQ8bF7iIPHEqP5MIr3_JG9YS3hw5onUeLp3xxcGsZsGKbNqPCW_k-PHomp_bl6rZrM/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxgOZZ9oXa8xZxxURGYMlN74hI3gHPCYDpuldZChNSsA-UvO4HGQg7PCxc-jRBZ6VyTuw/exec';
 
     async function main() {
         await liff.init({ liffId: LIFF_ID });
@@ -71,11 +71,9 @@
 
         document.getElementById('loader').style.display = 'block';
 
-        // ดึง LIFF Profile เพื่อเก็บคู่กับรหัสพนักงาน
         const profile = await liff.getProfile();
-        
-        // ใช้ JSONP ส่งข้อมูลไปที่ Apps Script (doGet)
         const callbackName = 'reg_callback_' + Math.round(100000 * Math.random());
+        
         window[callbackName] = function(data) {
             delete window[callbackName];
             document.body.removeChild(script);
@@ -109,6 +107,7 @@
 </script>
 </body>
 </html>
+
 
 
 
