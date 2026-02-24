@@ -30,11 +30,6 @@
         <label>รหัสพนักงาน</label>
         <input type="text" id="employeeId" placeholder="เช่น 11419999">
     </div>
-    
-    <div class="input-group">
-        <label>ชื่อ-นามสกุล (ภาษาไทย)</label>
-        <input type="text" id="fullName" placeholder="นายใจดี มีสุข">
-    </div>
 
     <div id="loader">กำลังบันทึกข้อมูล...</div>
 
@@ -61,10 +56,9 @@
 
     async function sendData() {
         const empId = document.getElementById('employeeId').value;
-        const name = document.getElementById('fullName').value;
 
-        if (!empId || !name) {
-            alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+        if (!empId) {
+            alert('กรุณากรอกรหัสพนักงาน');
             return;
         }
 
@@ -90,8 +84,7 @@
             '?callback=' + callbackName +
             '&type=Registration' +
             '&userId=' + encodeURIComponent(profile.userId) +
-            '&employeeId=' + encodeURIComponent(empId) +
-            '&userName=' + encodeURIComponent(name);
+            '&employeeId=' + encodeURIComponent(empId);
 
         const script = document.createElement('script');
         script.src = fullUrl;
@@ -106,6 +99,7 @@
 </script>
 </body>
 </html>
+
 
 
 
