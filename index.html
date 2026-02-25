@@ -27,8 +27,8 @@
     <h2>ลงทะเบียนพนักงาน</h2>
     <div style="display: flex; align-text: center; justify-content: center;" id="user">กำลังโหลดข้อมูล...</div>
     <div class="input-group">
-        <label>รหัสพนักงาน</label>
-        <input type="text" maxlength="8" id="employeeId" placeholder="เช่น 11419999">
+        <label>รหัสพนักงาน (8 หลัก)</label>
+        <input type="text" maxlength="8" id="employeeId" placeholder="ตัวอย่าง 11419999">
     </div>
 
     <div id="loader">กำลังบันทึกข้อมูล...</div>
@@ -58,25 +58,27 @@
         const empId = document.getElementById('employeeId').value;
 
         if (empId.length != 8) {
-            alert('กรุณากรอกรหัสพนักงาน');
+            alert('กรุณากรอกรหัสพนักงานให้ถูกต้อง');
             return;
         }
 
-        document.getElementById('loader').style.display = 'block';
-
-        const profile = await liff.getProfile();
-        const callbackName = 'reg_callback_' + Math.round(100000 * Math.random());
-        
-        window[callbackName] = function(data) {
-            delete window[callbackName];
-            document.body.removeChild(script);
-            document.getElementById('loader').style.display = 'none';
+        if (confirm('ยืนยันการลงทะเบียนรหัสพนักงาน ' + empId)) {
+            document.getElementById('loader').style.display = 'block';
+    
+            const profile = await liff.getProfile();
+            const callbackName = 'reg_callback_' + Math.round(100000 * Math.random());
             
-            if (data.status === 'success') {
-                alert(data.message);
-                liff.closeWindow();
-            } else {
-                alert('แจ้งเตือน: ' + data.message);
+            window[callbackName] = function(data) {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                document.getElementById('loader').style.display = 'none';
+                
+                if (data.status === 'success') {
+                    alert(data.message);
+                    liff.closeWindow();
+                } else {
+                    alert('แจ้งเตือน: ' + data.message);
+                }
             }
         };
 
@@ -99,6 +101,7 @@
 </script>
 </body>
 </html>
+
 
 
 
