@@ -57,7 +57,7 @@
     async function sendData() {
         const empId = document.getElementById('employeeId').value;
 
-        if (!empId) {
+        if (empId.length != 8) {
             alert('กรุณากรอกรหัสพนักงาน');
             return;
         }
@@ -99,6 +99,7 @@
 </script>
 </body>
 </html>
+
 
 
 
