@@ -41,7 +41,7 @@
 
 <script>
     const LIFF_ID = '2009213281-svkUkreW';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxSmeURljgMrknelXAYMrGOJGhbvm6-xZSj6Wh3zSqQqYpp4bfHVjCclf4XtNR3kCnH/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxOVlVSGaUICT3ocuOJ30kW5oyphBujhOTs9R6kOyk6rPzv4LlQAB-RA-GNekwpFnNA/exec';
 
     async function main() {
         await liff.init({ liffId: LIFF_ID });
@@ -76,7 +76,7 @@
                 alert(data.message);
                 liff.closeWindow();
             } else {
-                alert('เกิดข้อผิดพลาด: ' + data.message);
+                alert('แจ้งเตือน: ' + data.message);
             }
         };
 
@@ -99,6 +99,7 @@
 </script>
 </body>
 </html>
+
 
 
 
