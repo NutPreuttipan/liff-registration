@@ -11,7 +11,7 @@
         h2 { color: #333; text-align: center; margin-bottom: 25px; }
         .input-group { margin-bottom: 15px; text-align: left; }
         label { display: block; margin-bottom: 5px; color: #666; font-size: 14px; }
-        label-star { display: block; margin-bottom: 5px; color: #f00; font-size: 14px; }
+        .required { color: #f00 }
         input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
         .btn-group { display: flex; gap: 10px; margin-top: 20px; }
         button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
@@ -28,7 +28,7 @@
     <h2>ลงทะเบียนพนักงาน</h2>
     <div style="display: flex; align-text: center; justify-content: center;" id="user">กำลังโหลดข้อมูล...</div>
     <div class="input-group">
-        <label>รหัสพนักงาน (8 หลัก)</label><label-star>*</label-star>
+        <label>รหัสพนักงาน (8 หลัก) <span class="required">*</span></label>
         <input type="text" maxlength="8" id="employeeId" placeholder="ตัวอย่าง 11419999">
     </div>
 
@@ -102,6 +102,7 @@
 </script>
 </body>
 </html>
+
 
 
 
