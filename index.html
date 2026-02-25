@@ -29,7 +29,7 @@
     <div style="display: flex; align-text: center; justify-content: center;" id="user">กำลังโหลดข้อมูล...</div>
     <div class="input-group">
         <label>รหัสพนักงาน (8 หลัก) <span class="required">*</span></label>
-        <input type="number" maxlength="8" id="employeeId" placeholder="ตัวอย่าง 11419999">
+        <input type="text" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '');" id="employeeId" placeholder="ตัวอย่าง 11419999">
     </div>
 
     <div id="loader">กำลังบันทึกข้อมูล...</div>
@@ -102,6 +102,7 @@
 </script>
 </body>
 </html>
+
 
 
 
