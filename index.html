@@ -79,19 +79,19 @@
                     liff.closeWindow();
                 } else {
                     alert('แจ้งเตือน: ' + data.message);
-                }
-            }
-        };
+                }   
+            };
 
-        const fullUrl = GAS_URL + 
-            '?callback=' + callbackName +
-            '&type=Registration' +
-            '&userId=' + encodeURIComponent(profile.userId) +
-            '&employeeId=' + encodeURIComponent(empId);
-
-        const script = document.createElement('script');
-        script.src = fullUrl;
-        document.body.appendChild(script);
+            const fullUrl = GAS_URL + 
+                '?callback=' + callbackName +
+                '&type=Registration' +
+                '&userId=' + encodeURIComponent(profile.userId) +
+                '&employeeId=' + encodeURIComponent(empId);
+    
+            const script = document.createElement('script');
+            script.src = fullUrl;
+            document.body.appendChild(script);
+        }
     }
     
     function handleCancel() {
@@ -102,6 +102,7 @@
 </script>
 </body>
 </html>
+
 
 
 
