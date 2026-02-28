@@ -104,7 +104,7 @@
 
         NativeConfirm.fire({
             title: 'ยืนยันการลงทะเบียนรหัสพนักงาน ' + empId
-        }).then((result) => {
+        }).then((async result) => {
              document.getElementById('loader').style.display = 'block';
     
             const profile = await liff.getProfile();
@@ -150,6 +150,7 @@
 </script>
 </body>
 </html>
+
 
 
 
