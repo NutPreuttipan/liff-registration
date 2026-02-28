@@ -19,6 +19,14 @@
         .btn-submit:hover { background-color: #218838; }
         .btn-cancel { background-color: #dc3545; color: white; }
         .btn-cancel:hover { background-color: #c82333; }
+        .native-popup {width: 320px !important; padding: 20px !important; border-radius: 12px !important; font-family: sans-serif !important; }
+        .native-title { font-size: 18px !important; padding: 0 !important; margin-bottom: 10px !important; font-weight: 600 !important;}
+        .native-text { font-size: 14px !important; margin: 0 0 20px 0 !important; color: #444 !important; }
+        .native-actions { display: flex !important; gap: 15px !important; width: 100% !important; margin-top: 10px !important; }
+        .native-confirm-btn, .native-cancel-btn { background: transparent !important; border: none !important; font-size: 16px !important; font-weight: 600 !important; cursor: pointer; padding: 5px 10px !important; }
+        .native-confirm-btn { color: #28a745 !important; }
+        .native-cancel-btn { color: #666 !important; }
+        .native-confirm-btn:active, .native-cancel-btn:active { opacity: 0.5; }
         #loader { display: none; text-align: center; color: #28a745; margin-top: 10px; }
     </style>
 </head>
@@ -59,12 +67,14 @@
         const empId = document.getElementById('employeeId').value;
 
         if (empId.length != 8) {
-            alert('กรุณากรอกรหัสพนักงานให้ถูกต้อง');
+            NativeAlert.fire({ 'กรุณากรอกรหัสพนักงานให้ถูกต้อง' });
             return;
         }
 
-        if (confirm('ยืนยันการลงทะเบียนรหัสพนักงาน ' + empId)) {
-            document.getElementById('loader').style.display = 'block';
+        NativeConfirm.fire({
+            title: 'ยืนยันการลงทะเบียนรหัสพนักงาน ' + empId
+        }).then((result) => {
+             document.getElementById('loader').style.display = 'block';
     
             const profile = await liff.getProfile();
             const callbackName = 'reg_callback_' + Math.round(100000 * Math.random());
@@ -75,11 +85,14 @@
                 document.getElementById('loader').style.display = 'none';
                 
                 if (data.status === 'success') {
-                    alert(data.message);
-                    liff.closeWindow();
+                    NativeAlert.fire({ 
+                        title: data.message 
+                    }).then(() => {
+                        liff.closeWindow();
+                    });
                 } else {
-                    alert('แจ้งเตือน: ' + data.message);
-                }   
+                    NativeAlert.fire({ title: 'แจ้งเตือน: ' + data.message });
+                }  
             };
 
             const fullUrl = GAS_URL + 
@@ -91,17 +104,85 @@
             const script = document.createElement('script');
             script.src = fullUrl;
             document.body.appendChild(script);
-        }
+        });
+
+        // if (confirm('ยืนยันการลงทะเบียนรหัสพนักงาน ' + empId)) {
+        //     document.getElementById('loader').style.display = 'block';
+    
+        //     const profile = await liff.getProfile();
+        //     const callbackName = 'reg_callback_' + Math.round(100000 * Math.random());
+            
+        //     window[callbackName] = function(data) {
+        //         delete window[callbackName];
+        //         document.body.removeChild(script);
+        //         document.getElementById('loader').style.display = 'none';
+                
+        //         if (data.status === 'success') {
+        //             NativeAlert.fire({ 
+        //                 title: data.message 
+        //             }).then(() => {
+        //                 liff.closeWindow();
+        //             });
+        //         } else {
+        //             NativeAlert.fire({ title: 'แจ้งเตือน: ' + data.message });
+        //         }  
+        //     };
+
+        //     const fullUrl = GAS_URL + 
+        //         '?callback=' + callbackName +
+        //         '&type=Registration' +
+        //         '&userId=' + encodeURIComponent(profile.userId) +
+        //         '&employeeId=' + encodeURIComponent(empId);
+    
+        //     const script = document.createElement('script');
+        //     script.src = fullUrl;
+        //     document.body.appendChild(script);
+        // }
     }
     
     function handleCancel() {
-        if (confirm('คุณต้องการยกเลิกการลงทะเบียนหรือไม่?')) {
-            liff.closeWindow();
-        }
+        NativeConfirm.fire({
+            title: 'คุณต้องการยกเลิกการลงทะเบียนหรือไม่?'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                liff.closeWindow();
+            }
+        });
     }
+    
+    const NativeConfirm = Swal.mixin({
+            reverseButtons: true,
+            buttonsStyling: false,
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            customClass: {
+                popup: 'native-popup',
+                title: 'native-title',
+                htmlContainer: 'native-text',
+                actions: 'native-actions',
+                confirmButton: 'native-confirm-btn',
+                cancelButton: 'native-cancel-btn'
+            }
+        });
+        
+        const NativeAlert = Swal.mixin({
+            reverseButtons: true,
+            buttonsStyling: false,
+            confirmButtonText: 'OK',
+            customClass: {
+                popup: 'native-popup',
+                title: 'native-title',
+                htmlContainer: 'native-text',
+                actions: 'native-actions',
+                confirmButton: 'native-confirm-btn',
+                cancelButton: 'native-cancel-btn'
+            }
+        }); 
 </script>
 </body>
 </html>
+
 
 
 
