@@ -7,7 +7,7 @@
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: flex-start; margin: 0; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; margin: 0; }
         .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 90%; max-width: 400px; }
         h2 { color: #333; text-align: center; margin-bottom: 25px; }
         .input-group { margin-bottom: 15px; text-align: left; }
@@ -35,7 +35,7 @@
 
 <div class="container">
     <h2>ลงทะเบียนพนักงาน</h2>
-    <div style="display: flex; align-text: center; justify-content: center;" id="user">กำลังโหลดข้อมูล...</div>
+    <div style="display: flex; text-align: center; justify-content: center;" id="user">กำลังโหลดข้อมูล...</div>
     <div class="input-group">
         <label>รหัสพนักงาน (8 หลัก) <span class="required">*</span></label>
         <input type="text" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '');" id="employeeId" placeholder="ตัวอย่าง 11419999">
@@ -104,37 +104,39 @@
 
         NativeConfirm.fire({
             title: 'ยืนยันการลงทะเบียนรหัสพนักงาน ' + empId
-        }).then((async result) => {
-             document.getElementById('loader').style.display = 'block';
-    
-            const profile = await liff.getProfile();
-            const callbackName = 'reg_callback_' + Math.round(100000 * Math.random());
-            
-            window[callbackName] = function(data) {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                document.getElementById('loader').style.display = 'none';
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                document.getElementById('loader').style.display = 'block';
+        
+                const profile = await liff.getProfile();
+                const callbackName = 'reg_callback_' + Math.round(100000 * Math.random());
                 
-                if (data.status === 'success') {
-                    NativeAlert.fire({ 
-                        title: data.message 
-                    }).then(() => {
-                        liff.closeWindow();
-                    });
-                } else {
-                    NativeAlert.fire({ title: 'แจ้งเตือน: ' + data.message });
-                }  
-            };
-
-            const fullUrl = GAS_URL + 
-                '?callback=' + callbackName +
-                '&type=Registration' +
-                '&userId=' + encodeURIComponent(profile.userId) +
-                '&employeeId=' + encodeURIComponent(empId);
+                window[callbackName] = function(data) {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    document.getElementById('loader').style.display = 'none';
+                    
+                    if (data.status === 'success') {
+                        NativeAlert.fire({ 
+                            title: data.message 
+                        }).then(() => {
+                            liff.closeWindow();
+                        });
+                    } else {
+                        NativeAlert.fire({ title: 'แจ้งเตือน: ' + data.message });
+                    }  
+                };
     
-            const script = document.createElement('script');
-            script.src = fullUrl;
-            document.body.appendChild(script);
+                const fullUrl = GAS_URL + 
+                    '?callback=' + callbackName +
+                    '&type=Registration' +
+                    '&userId=' + encodeURIComponent(profile.userId) +
+                    '&employeeId=' + encodeURIComponent(empId);
+        
+                const script = document.createElement('script');
+                script.src = fullUrl;
+                document.body.appendChild(script);
+            }
         });
     }
     
@@ -150,6 +152,7 @@
 </script>
 </body>
 </html>
+
 
 
 
