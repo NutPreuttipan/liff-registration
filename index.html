@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GO Platform Squad</title>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: flex-start; margin: 0; }
         .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 90%; max-width: 400px; }
@@ -52,6 +53,36 @@
     const LIFF_ID = '2009213281-svkUkreW';
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbxOVlVSGaUICT3ocuOJ30kW5oyphBujhOTs9R6kOyk6rPzv4LlQAB-RA-GNekwpFnNA/exec';
 
+    const NativeConfirm = Swal.mixin({
+            reverseButtons: true,
+            buttonsStyling: false,
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            customClass: {
+                popup: 'native-popup',
+                title: 'native-title',
+                htmlContainer: 'native-text',
+                actions: 'native-actions',
+                confirmButton: 'native-confirm-btn',
+                cancelButton: 'native-cancel-btn'
+            }
+        });
+        
+    const NativeAlert = Swal.mixin({
+        reverseButtons: true,
+        buttonsStyling: false,
+        confirmButtonText: 'OK',
+        customClass: {
+            popup: 'native-popup',
+            title: 'native-title',
+            htmlContainer: 'native-text',
+            actions: 'native-actions',
+            confirmButton: 'native-confirm-btn',
+            cancelButton: 'native-cancel-btn'
+        }
+    }); 
+
     async function main() {
         await liff.init({ liffId: LIFF_ID });
         if (liff.isLoggedIn()) {
@@ -67,7 +98,7 @@
         const empId = document.getElementById('employeeId').value;
 
         if (empId.length != 8) {
-            NativeAlert.fire({ 'กรุณากรอกรหัสพนักงานให้ถูกต้อง' });
+            NativeAlert.fire({ title: 'กรุณากรอกรหัสพนักงานให้ถูกต้อง' });
             return;
         }
 
@@ -105,39 +136,6 @@
             script.src = fullUrl;
             document.body.appendChild(script);
         });
-
-        // if (confirm('ยืนยันการลงทะเบียนรหัสพนักงาน ' + empId)) {
-        //     document.getElementById('loader').style.display = 'block';
-    
-        //     const profile = await liff.getProfile();
-        //     const callbackName = 'reg_callback_' + Math.round(100000 * Math.random());
-            
-        //     window[callbackName] = function(data) {
-        //         delete window[callbackName];
-        //         document.body.removeChild(script);
-        //         document.getElementById('loader').style.display = 'none';
-                
-        //         if (data.status === 'success') {
-        //             NativeAlert.fire({ 
-        //                 title: data.message 
-        //             }).then(() => {
-        //                 liff.closeWindow();
-        //             });
-        //         } else {
-        //             NativeAlert.fire({ title: 'แจ้งเตือน: ' + data.message });
-        //         }  
-        //     };
-
-        //     const fullUrl = GAS_URL + 
-        //         '?callback=' + callbackName +
-        //         '&type=Registration' +
-        //         '&userId=' + encodeURIComponent(profile.userId) +
-        //         '&employeeId=' + encodeURIComponent(empId);
-    
-        //     const script = document.createElement('script');
-        //     script.src = fullUrl;
-        //     document.body.appendChild(script);
-        // }
     }
     
     function handleCancel() {
@@ -149,39 +147,10 @@
             }
         });
     }
-    
-    const NativeConfirm = Swal.mixin({
-            reverseButtons: true,
-            buttonsStyling: false,
-            showCancelButton: true,
-            confirmButtonText: 'OK',
-            cancelButtonText: 'Cancel',
-            customClass: {
-                popup: 'native-popup',
-                title: 'native-title',
-                htmlContainer: 'native-text',
-                actions: 'native-actions',
-                confirmButton: 'native-confirm-btn',
-                cancelButton: 'native-cancel-btn'
-            }
-        });
-        
-        const NativeAlert = Swal.mixin({
-            reverseButtons: true,
-            buttonsStyling: false,
-            confirmButtonText: 'OK',
-            customClass: {
-                popup: 'native-popup',
-                title: 'native-title',
-                htmlContainer: 'native-text',
-                actions: 'native-actions',
-                confirmButton: 'native-confirm-btn',
-                cancelButton: 'native-cancel-btn'
-            }
-        }); 
 </script>
 </body>
 </html>
+
 
 
 
